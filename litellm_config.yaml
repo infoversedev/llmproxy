@@ -1,0 +1,16 @@
+model_list:
+  - model_name: gpt-4o
+    litellm_params:
+      model: azure/gpt-4o
+      api_base: https://hcs-llm-ca.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-08-01-preview
+      api_key = "D7OfL5ppifFGJ71p1E8056q6PB3JEnyhiWfcWvQt8Aqq5zF5A1sTJQQJ99AKACREanaXJ3w3AAABACOGmZYs"
+  # runs os.getenv("AZURE_API_BASE")
+      #api_key: os.environ/AZURE_API_KEY="xxx"
+ # runs os.getenv("AZURE_API_KEY")
+      #api_version: "2023-07-01-preview"
+
+general_settings: 
+  master_key: sk-1234  
+  store_model_in_db: true    
+
+

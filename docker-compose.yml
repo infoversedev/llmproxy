@@ -1,0 +1,43 @@
+
+#version: '3.8'
+
+services:
+  litellm:
+    image: ghcr.io/berriai/litellm:litellm_azure_ai_dev_fix-dev
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+    environment:
+      - PORT=4000
+      - DATABASE_URL=postgresql://litellm_user:litellm_password@postgres:5432/litellm_db
+      - LITELLM_MASTER_KEY=sk-1234
+      - PROXY_LOG_REQUESTS=true
+    volumes:
+      - ./litellm_config.yaml:/app/config.yaml
+    #restart: always
+    #healthcheck:
+     # test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      #interval: 30s
+      #timeout: 10s
+      #retries: 3
+
+  postgres:
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=litellm_user
+      - POSTGRES_PASSWORD=sk-1234
+      - POSTGRES_DB=litellm_db
+    ports:
+      - "5432:5432" 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    #restart: always
+    #healthcheck:
+     # test: ["CMD-SHELL", "pg_isready -U litellm_user -d litellm_db"]
+      #interval: 10s
+      #timeout: 5s
+      #retries: 5
+
+volumes:
+  postgres_data:
