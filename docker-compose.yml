@@ -1,0 +1,43 @@
+
+#version: '3.8'
+
+services:
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+    environment:
+      - PORT=4000
+      - DATABASE_URL=postgresql://postgres:root@postgres:5432/postgres
+      - LITELLM_MASTER_KEY=sk-1234
+      - PROXY_LOG_REQUESTS=true
+    volumes:
+      - ./litellm_config.yaml:/app/config.yaml
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432" 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
