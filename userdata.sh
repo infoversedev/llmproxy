@@ -1,5 +1,6 @@
 #!/bin/bash
-pip install --upgrade pip
+sudo yum install -y git pip
+#pip install --upgrade pip
 sudo yum install -y git python3-pip
 #python3 -m venv myenv
 #source myenv/bin/activate
